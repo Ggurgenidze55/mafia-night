@@ -1,8 +1,7 @@
 {
-  "rootDirectory": "apps/web",
-  "installCommand": "cd ../.. && npm install",
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
+  "installCommand": "cd ../.. && npm install",
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_SERVER_URL": "https://server-production-1f8d.up.railway.app",
