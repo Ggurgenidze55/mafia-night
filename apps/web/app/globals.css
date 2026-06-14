@@ -2,22 +2,210 @@
 
 :root {
   --gold: #C8A96E;
+  --gold-light: #E8C98E;
+  --gold-dark: #8B6914;
   --danger: #E63946;
+  --danger-dark: #9B1B24;
   --safe: #2EC4B6;
   --detective: #FFD166;
   --bg: #0A0A0F;
+  --bg2: #0F0F17;
+  --card: rgba(255,255,255,0.03);
+  --border: rgba(200,169,110,0.15);
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
 
 body {
   background: #0A0A0F;
   color: #e5e7eb;
   font-family: var(--font-inter), sans-serif;
+  overflow-x: hidden;
 }
 
+/* Custom scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
 ::-webkit-scrollbar-thumb { background: rgba(200,169,110,0.3); border-radius: 2px; }
+
+/* Gold text gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #C8A96E 0%, #E8C98E 40%, #C8A96E 60%, #8B6914 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Glass card */
+.glass {
+  background: rgba(255,255,255,0.03);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(200,169,110,0.15);
+}
+
+/* Glowing border */
+.glow-border {
+  box-shadow: 0 0 20px rgba(200,169,110,0.1), inset 0 0 20px rgba(200,169,110,0.03);
+  border: 1px solid rgba(200,169,110,0.25);
+}
+
+/* Input styles */
+.input-noir {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(200,169,110,0.2);
+  color: #e5e7eb;
+  transition: all 0.3s ease;
+}
+.input-noir:focus {
+  outline: none;
+  border-color: rgba(200,169,110,0.6);
+  background: rgba(255,255,255,0.06);
+  box-shadow: 0 0 20px rgba(200,169,110,0.1);
+}
+.input-noir::placeholder { color: rgba(255,255,255,0.2); }
+
+/* Button primary (gold) */
+.btn-gold {
+  background: linear-gradient(135deg, #C8A96E 0%, #8B6914 100%);
+  color: #0A0A0F;
+  font-weight: 700;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+.btn-gold::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transition: left 0.5s ease;
+}
+.btn-gold:hover::before { left: 100%; }
+.btn-gold:hover { box-shadow: 0 0 30px rgba(200,169,110,0.4); transform: translateY(-1px); }
+.btn-gold:active { transform: translateY(0); }
+
+/* Button secondary */
+.btn-ghost {
+  background: rgba(200,169,110,0.08);
+  border: 1px solid rgba(200,169,110,0.3);
+  color: #C8A96E;
+  transition: all 0.3s ease;
+}
+.btn-ghost:hover {
+  background: rgba(200,169,110,0.15);
+  border-color: rgba(200,169,110,0.6);
+  box-shadow: 0 0 20px rgba(200,169,110,0.15);
+}
+
+/* Danger button */
+.btn-danger {
+  background: linear-gradient(135deg, #E63946, #9B1B24);
+  color: white;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+.btn-danger:hover { box-shadow: 0 0 30px rgba(230,57,70,0.4); }
+
+/* Particle canvas */
+#particle-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Noise texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* Vignette */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.8) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Font for titles */
+.font-cinzel { font-family: 'Cinzel', serif; }
+.font-crimson { font-family: 'Crimson Text', serif; }
+
+/* Player card hover */
+.player-card {
+  transition: all 0.3s ease;
+  cursor: default;
+}
+.player-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(200,169,110,0.4);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.5), 0 0 20px rgba(200,169,110,0.1);
+}
+
+/* Role badge glow */
+.role-mafia { color: #E63946; text-shadow: 0 0 10px rgba(230,57,70,0.5); }
+.role-detective { color: #FFD166; text-shadow: 0 0 10px rgba(255,209,102,0.5); }
+.role-doctor { color: #2EC4B6; text-shadow: 0 0 10px rgba(46,196,182,0.5); }
+.role-civilian { color: #C8A96E; }
+
+/* Pulse animation for night */
+@keyframes nightPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* Shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer-text {
+  background: linear-gradient(90deg, #C8A96E 25%, #E8C98E 50%, #C8A96E 75%);
+  background-size: 200% auto;
+  animation: shimmer 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Chat bubble */
+.chat-bubble {
+  background: rgba(255,255,255,0.04);
+  border-left: 2px solid rgba(200,169,110,0.3);
+  transition: background 0.2s;
+}
+.chat-bubble:hover { background: rgba(255,255,255,0.06); }
+.chat-bubble.mafia { border-left-color: rgba(230,57,70,0.5); }
+
+/* Vote button */
+.vote-btn {
+  background: rgba(230,57,70,0.08);
+  border: 1px solid rgba(230,57,70,0.2);
+  color: #E63946;
+  transition: all 0.3s;
+}
+.vote-btn:hover:not(:disabled) {
+  background: rgba(230,57,70,0.2);
+  border-color: rgba(230,57,70,0.6);
+  box-shadow: 0 0 15px rgba(230,57,70,0.2);
+  transform: scale(1.02);
+}
+.vote-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.vote-btn.voted {
+  background: rgba(230,57,70,0.25);
+  border-color: rgba(230,57,70,0.8);
+  box-shadow: 0 0 20px rgba(230,57,70,0.3);
+}

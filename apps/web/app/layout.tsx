@@ -13,7 +13,12 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ka" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
-      <body className="min-h-screen bg-[#0A0A0F] text-white antialiased" style={{ fontFamily: 'var(--font-inter)' }} suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+      </head>
+      <body className="min-h-screen bg-[#07070E] text-white antialiased" style={{ fontFamily: 'var(--font-inter)' }} suppressHydrationWarning>
         {children}
       </body>
     </html>
