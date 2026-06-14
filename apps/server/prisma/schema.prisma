@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Room {
+  id        String   @id @default(cuid())
+  code      String   @unique @db.VarChar(6)
+  status    String   @default("LOBBY")
+  hostId    String
+  settings  Json     @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  players GamePlayer[]
+  rounds  GameRound[]
+}
+
+model GamePlayer {
+  id       String  @id @default(cuid())
+  roomId   String
+  name     String
+  role     String?
+  isAlive  Boolean @default(true)
+  isHost   Boolean @default(false)
+  gamesWon Int     @default(0)
+
+  room Room @relation(fields: [roomId], references: [id])
+}
+
+model GameRound {
+  id        String   @id @default(cuid())
+  roomId    String
+  roundNum  Int
+  killed    String?
+  eliminated String?
+  winner    String?
+  events    Json     @default("[]")
+  startedAt DateTime @default(now())
+
+  room Room @relation(fields: [roomId], references: [id])
+}
