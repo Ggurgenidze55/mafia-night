@@ -10,14 +10,22 @@ const app = Fastify({ logger: true });
 
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
 
+function isAllowedOrigin(origin: string) {
+  if (!origin) return true;
+  if (origin === CLIENT_URL) return true;
+  if (origin.endsWith('.vercel.app')) return true;
+  if (origin.startsWith('http://localhost:')) return true;
+  return false;
+}
+
 app.register(fastifyCors, {
-  origin: CLIENT_URL
+  origin: (origin, cb) => cb(null, isAllowedOrigin(origin || ''))
 });
 
 // Attach Socket.io to Fastify's internal server (same port, same process)
 const io = new Server(app.server, {
   cors: {
-    origin: CLIENT_URL,
+    origin: (origin, cb) => cb(null, isAllowedOrigin(origin || '')),
     methods: ['GET', 'POST']
   }
 });
