@@ -42,14 +42,13 @@ export default function GamePage() {
     if (phase === 'ROLE_REVEAL') setShowRoleReveal(true);
   }, [phase]);
 
-  // Start WebRTC calls when game begins
+  // Start WebRTC calls when game phase leaves lobby
   useEffect(() => {
-    if (phase !== 'LOBBY' && phase !== 'ROLE_REVEAL' && settings.videoEnabled) {
-      players.forEach(p => {
-        if (p.id !== myPlayerId) callPeer(p.id);
-      });
-    }
-  }, [phase === 'NIGHT_START']);
+    if (phase === 'LOBBY' || phase === 'ROLE_REVEAL' || !settings.videoEnabled) return;
+    players.forEach(p => {
+      if (p.id !== myPlayerId) callPeer(p.id);
+    });
+  }, [phase, players.length, settings.videoEnabled]);
 
   function sendVote(targetId: string) {
     socket.emit('vote:cast', { targetId });
